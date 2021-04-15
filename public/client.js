@@ -136,3 +136,7 @@ socket.on('serverToClient', (data) => {
 });
 // 
 socket.emit('clientToServer', 'Hello, server!');
+
+socket.on('playerKeys', data => {
+    console.log(data);
+})
