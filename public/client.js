@@ -88,7 +88,11 @@ const createScene = (engine, canvas) => {
 
 const socket = io('http://localhost:3000');
 
-const sendPlayerData = (socket, data) => {
+const sendPlayerData = (socket, keys) => {
+    const data = {
+        ID: socket.id,
+        keys
+    }
     socket.emit('update', data);
 }
 
@@ -108,7 +112,6 @@ const init = (socket) => {
     engine.runRenderLoop(() => {
         moveUpdate(player, keysStatus.status);
         sendPlayerData(socket, keysStatus.status);
-        // sendPlayerData(player);
         scene.render();
     });
 
@@ -129,14 +132,8 @@ helloBtn.addEventListener('click', () => {
 
 init(socket);
 
-console.log(socket);
-// 
-socket.on('serverToClient', (data) => {
-    // console.log(data);
-});
-// 
 socket.emit('clientToServer', 'Hello, server!');
 
-socket.on('playerKeys', data => {
+socket.on('worldData', data => {
     console.log(data);
 })

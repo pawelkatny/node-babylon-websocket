@@ -8,22 +8,6 @@ const server = app.listen(port, () => {
 
 app.use(express.static('public'));
 
-const testIIF = (function() {
-  let zmienna = {};
-
-  function updateData(data) {
-      zmienna = { ...data };
-  }
-
-  function getData() {
-      return zmienna;
-  }
-
-  return {
-    updateData,
-    getData
-  }
-})();
 
 const io = require('socket.io')(server);
 
@@ -38,11 +22,13 @@ const connected = (socket) => {
   })
   socket.emit('ServerClientHello', 'Server says hello to client');
   socket.on('update', data => {
-    testIIF.updateData(data);
+    console.log(data)
   });
 
   setInterval(() => {
-    socket.emit('playerKeys', testIIF.getData());
+    socket.emit('worldData', {
+      players: ['Player1', 'Player2', 'Player3', 'Player4']
+    });
     
   }, 5000)
 }
